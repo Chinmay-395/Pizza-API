@@ -19,3 +19,24 @@
 
 DB-NAME: PizzaAppDatabase
 Collection-NAME: PizzaAppCollection
+
+#### Steps for running the project
+
+1. Create & run a virtualenv
+
+```
+virtualenv env
+source env/Scripts/activate ---> bash on windows
+source env/bin/activate     ---> Linux
+```
+
+2. Install the requirements
+   `pip install requirements.txt`
+3. Install and MongoDB atlas on your local
+4. move into the app-directory
+   `cd pizza_site/`
+5. run the server
+
+```python manage.py runserver
+
+```
