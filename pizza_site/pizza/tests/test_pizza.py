@@ -2,22 +2,15 @@ from django.test import TestCase
 from django.urls import reverse
 from rest_framework.test import APIClient
 from rest_framework import status
+from pizza.models import Topping, Size
 
 
 class SizeApiTests(TestCase):
-    """Size API
+    """Size API testing
 
-    Args:
-        TestCase ([type]): [description]
     """
 
     def test_create_valid_size_success(self):
-        payload = {
-            "name": "Mediumish_Large"
-        }
-        res = self.client.post(
-            reverse('pizza:create'),
-            payload
-        )
+        size = Size.objects.create(name="Mediumish_Large")
 
-        self.assertEquals(res.status_code, status.HTTP_201_CREATED)
+        self.assertEquals(str(size), size.name)
