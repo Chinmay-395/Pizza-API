@@ -14,3 +14,8 @@
 2. API endpoint which lists the information about all the stored pizza
 3. filtering the list based on Size & Type of Pizza
 4. API endpoint that allows the user to edit or delete any pizza from the database
+
+#### Configurations
+
+DB-NAME: PizzaAppDatabase
+Collection-NAME: PizzaAppCollection
