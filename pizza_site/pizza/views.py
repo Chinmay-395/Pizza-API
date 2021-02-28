@@ -20,28 +20,29 @@ class PizzaModelViewSet(viewsets.ModelViewSet):
             return PizzaSerializer
 
 
-class ToppingModelViewSet(
+class BasePizzaAttributeViewSet(
         viewsets.GenericViewSet,
         mixins.ListModelMixin,
         mixins.CreateModelMixin):
+    """Base viewset for user owned pizza attributes """
+
+    def get_queryset(self):
+        return self.queryset.order_by('name')
+
+    def perform_create(self, serializer):
+        """Create a new object"""
+        return serializer.save()
+
+
+class ToppingModelViewSet(BasePizzaAttributeViewSet):
     """Manage Toppings of Pizza in the DB"""
     # ordered by name because it would easier to browse
     queryset = Topping.objects.all().order_by('name')
     serializer_class = ToppingSerializer
 
-    def perform_create(self, serializer):
-        return super().perform_create(serializer)
 
-
-class SizeModelViewSet(
-        viewsets.GenericViewSet,
-        mixins.ListModelMixin,
-        mixins.CreateModelMixin):
+class SizeModelViewSet(BasePizzaAttributeViewSet):
     """Manage Sizes of Pizza in the DB"""
     # ordered by name because it would easier to browse
     queryset = Size.objects.all().order_by('name')
     serializer_class = SizeSerializer
-
-    def perform_create(self, serializer):
-        """Create a new size"""
-        return super().perform_create(serializer)
