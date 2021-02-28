@@ -20,8 +20,13 @@ class PizzaModelViewSet(viewsets.ModelViewSet):
             return PizzaSerializer
 
 
-class ToppingModelViewSet(viewsets.ModelViewSet):
-    queryset = Topping.objects.all()
+class ToppingModelViewSet(
+        viewsets.GenericViewSet,
+        mixins.ListModelMixin,
+        mixins.CreateModelMixin):
+    """Manage Toppings of Pizza in the DB"""
+    # ordered by name because it would easier to browse
+    queryset = Topping.objects.all().order_by('name')
     serializer_class = ToppingSerializer
 
     def perform_create(self, serializer):
@@ -33,7 +38,8 @@ class SizeModelViewSet(
         mixins.ListModelMixin,
         mixins.CreateModelMixin):
     """Manage Sizes of Pizza in the DB"""
-    queryset = Size.objects.all()
+    # ordered by name because it would easier to browse
+    queryset = Size.objects.all().order_by('name')
     serializer_class = SizeSerializer
 
     def perform_create(self, serializer):

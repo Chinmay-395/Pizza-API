@@ -7,6 +7,7 @@ from pizza.serializers import SizeSerializer, ToppingSerializer
 
 
 SIZE_URL = reverse('pizza:size-list')
+TOPPING_URL = reverse('pizza:topping-list')
 
 
 class SizeApiTests(TestCase):
@@ -28,12 +29,12 @@ class SizeApiTests(TestCase):
     def test_fetching_a_list_of_sizes(self):
         """In this test we test that we get a list of sizes in response"""
         # add sizes to the test DB
-        Size.objects.create(name="Mediumish_Large")
-        Size.objects.create(name="Smallish_Medium")
+        Size.objects.create(name="Mediumish Large")
+        Size.objects.create(name="Smallishsss Medium")
         # the SIZE_URL will call the router which would invoke the list function
         res = self.client.get(SIZE_URL)
         # We will call the objects serialize them and compare with our request
-        sizes = Size.objects.all()  # .order_by('-name')
+        sizes = Size.objects.all().order_by('name')
         serializer = SizeSerializer(sizes, many=True)
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
@@ -60,9 +61,18 @@ class SizeApiTests(TestCase):
         # the URL will call the router which would invoke the list function
         res = self.client.get(reverse('pizza:topping-list'))
         # We will call the objects, serialize them and compare with our request
-        toppings = Topping.objects.all()
+        toppings = Topping.objects.all().order_by('name')
         serializer = SizeSerializer(toppings, many=True)
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
 
         self.assertEquals(res.data, serializer.data)
+
+    def test_for_invalid_size_and_topping(self):
+        payload = {"name": ""}
+        # for size
+        res = self.client.post(SIZE_URL, payload)
+        self.assertEquals(res.status_code, status.HTTP_400_BAD_REQUEST)
+        # for topping
+        res = self.client.post(TOPPING_URL, payload)
+        self.assertEquals(res.status_code, status.HTTP_400_BAD_REQUEST)
