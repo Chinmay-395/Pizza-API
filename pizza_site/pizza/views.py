@@ -17,6 +17,9 @@ class PizzaModelViewSet(viewsets.ModelViewSet):
         if self.action == "retrieve":
             return PizzaDetailSerializer
 
+        if self.action == "list":
+            return PizzaSerializer
+
 
 class ToppingModelViewSet(viewsets.ModelViewSet):
     queryset = Topping.objects.all()

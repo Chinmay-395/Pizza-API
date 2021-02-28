@@ -3,6 +3,10 @@ from django.urls import reverse
 from rest_framework.test import APIClient
 from rest_framework import status
 from pizza.models import Topping, Size
+from pizza.serializers import SizeSerializer
+
+
+SIZE_URL = reverse('pizza:size-list')
 
 
 class SizeApiTests(TestCase):
@@ -20,3 +24,18 @@ class SizeApiTests(TestCase):
         size = Size.objects.create(name="Mediumish_Large")
 
         self.assertEquals(str(size), size.name)
+
+    def test_fetching_a_list_of_size(self):
+        """In this test we test that we get a list of sizes in response"""
+        # add sizes to the test DB
+        Size.objects.create(name="Mediumish_Large")
+        Size.objects.create(name="Smallish_Medium")
+        # the SIZE_URL will call the router which would invoke the list function
+        res = self.client.get(SIZE_URL)
+        # We will call the objects serialize them and compare with our request
+        sizes = Size.objects.all()  # .order_by('-name')
+        serializer = SizeSerializer(sizes, many=True)
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+
+        self.assertEquals(res.data, serializer.data)
