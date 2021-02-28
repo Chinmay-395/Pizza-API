@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from rest_framework import mixins, viewsets
 from django.shortcuts import get_object_or_404
 from .serializers import PizzaSerializer, SizeSerializer, ToppingSerializer, PizzaDetailSerializer
@@ -28,12 +27,15 @@ class ToppingModelViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         return super().perform_create(serializer)
 
-        return super().get_serializer_class()
 
-
-class SizeModelViewSet(viewsets.ModelViewSet):
+class SizeModelViewSet(
+        viewsets.GenericViewSet,
+        mixins.ListModelMixin,
+        mixins.CreateModelMixin):
+    """Manage Sizes of Pizza in the DB"""
     queryset = Size.objects.all()
     serializer_class = SizeSerializer
 
     def perform_create(self, serializer):
+        """Create a new size"""
         return super().perform_create(serializer)
