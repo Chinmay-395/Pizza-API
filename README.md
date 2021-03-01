@@ -1,20 +1,5 @@
 # Pizza-API
 
-```
-{
-    "name":"Jalapeno popers",
-    "pizza_shape": "SQUARE",
-    "pizza_size": "LARGE",
-    "pizza_topping": ["Tomato", "Corn", "Jalapeno"]
-}
-{
-    "name":"Jalapeno popers",
-    "pizza_shape": "SQUARE",
-    "pizza_size": 3,
-    "pizza_topping": [2, 3, 6]
-}
-```
-
 <!-- <p> -->
 
 ###### Stored Data regarding Pizza in the following fashion:-
@@ -55,3 +40,38 @@ source env/bin/activate     ---> Linux
 ```python manage.py runserver
 
 ```
+
+# API guide
+
+1.  api/pizza
+    ==> you will get a list of pizza and also can create
+2.  api/pizza/<pk:id>
+    ==> detail page where you can do RUD(Read, update, delete)
+3.  api/size
+    ==> perform create
+    <strong>Although it was mentioned that only Small/Medium/Large size are present but if you want to create another size, the api can utilize that.</strong>
+4.  api/topping
+    ==> you will get a list of toppings and also can create
+5.  api/topping/<pk:id>
+    ==> update the name of the topping
+
+ <!-- ```
+{
+    "name":"Jalapeno popers",
+    "pizza_shape": "SQUARE",
+    "pizza_size": "LARGE",
+    "pizza_topping": ["Tomato", "Corn", "Jalapeno"]
+}
+{
+    "name":"Jalapeno popers",
+    "pizza_shape": "SQUARE",
+    "pizza_size": 3,
+    "pizza_topping": [2, 3, 6]
+}
+Pizza.objects.create(
+   name="Jalapeno popers",
+    pizza_shape="SQUARE",
+    pizza_size= Size.objects.get(id=3),
+    pizza_topping=[2, 3, 6]
+)
+``` -->
