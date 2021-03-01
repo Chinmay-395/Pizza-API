@@ -1,5 +1,20 @@
 # Pizza-API
 
+```
+{
+    "name":"Jalapeno popers",
+    "pizza_shape": "SQUARE",
+    "pizza_size": "LARGE",
+    "pizza_topping": ["Tomato", "Corn", "Jalapeno"]
+}
+{
+    "name":"Jalapeno popers",
+    "pizza_shape": "SQUARE",
+    "pizza_size": 3,
+    "pizza_topping": [2, 3, 6]
+}
+```
+
 <!-- <p> -->
 
 ###### Stored Data regarding Pizza in the following fashion:-

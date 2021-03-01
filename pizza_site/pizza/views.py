@@ -9,15 +9,12 @@ class PizzaModelViewSet(viewsets.ModelViewSet):
     serializer_class = PizzaSerializer
 
     def perform_create(self, serializer):
-        print("THE SELF ACTION ===>", self.action)
         return super().perform_create(serializer)
 
     def get_serializer_class(self):
         if self.action == "retrieve":
             return PizzaDetailSerializer
-
-        if self.action == "list":
-            return PizzaSerializer
+        return self.serializer_class
 
 
 class BasePizzaAttributeViewSet(

@@ -2,17 +2,24 @@ from django.test import TestCase
 from django.urls import reverse
 from rest_framework.test import APIClient
 from rest_framework import status
-from pizza.models import Topping, Size
-from pizza.serializers import SizeSerializer, ToppingSerializer
+from pizza.models import Topping, Size, Pizza
+from pizza.serializers import SizeSerializer, ToppingSerializer, PizzaSerializer, PizzaDetailSerializer
 
 
 SIZE_URL = reverse('pizza:size-list')
 TOPPING_URL = reverse('pizza:topping-list')
+PIZZA_URL = reverse('pizza:pizza-list')
 
 
-class SizeApiTests(TestCase):
+def detail_url(pizza_id):
+    """ find the pizza with its id"""
+    return reverse('pizza:pizza-detail', args=[pizza_id])
+
+
+class PizzaApiTests(TestCase):
     """ • Size API testing
         • Topping API testing
+        • Pizza API testing
     """
 
     def test_create_valid_size_success(self):
@@ -76,3 +83,36 @@ class SizeApiTests(TestCase):
         # for topping
         res = self.client.post(TOPPING_URL, payload)
         self.assertEquals(res.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_retrieve_pizzas(self):
+        #Size is Large
+        pizza_size_val = Size.objects.get_or_create(name="LARGE")
+        topping1 = Topping.objects.get_or_create(name="Tomato")
+        topping2 = Topping.objects.get_or_create(name="Corn")
+        topping3 = Topping.objects.get_or_create(name="Jalapeno")
+        Pizza.objects.create(
+            name='Pasta Pizza',
+            pizza_shape="SQUARE",
+            pizza_size=pizza_size_val.id,
+            pizza_topping=[topping1.id, topping2.id, topping3.id]
+        )
+        res = self.client.get(PIZZA_URL)
+
+        pizzas = Pizza.objects.all()
+        serializer = PizzaSerializer(pizzas, many=True)
+
+        self.assertEquals(res.status_code, status.HTTP_200_OK)
+        self.assertEquals(res.data, serializer.data)
+
+    # def test_view_pizza_detail(self):
+    #     pizza = Pizza.objects.create(
+    #         name='Pasta Pizza',
+    #         pizza_shape="SQUARE",
+    #         pizza_size=3,
+    #         pizza_topping=["Tomato", "Corn", "Jalapeno"]
+    #     )
+    #     url = detail_url(pizza.id)
+    #     res = self.client.get(url)
+
+    #     serializer = PizzaDetailSerializer(pizza)
+    #     self.assertEquals(res.data, serializer.data)

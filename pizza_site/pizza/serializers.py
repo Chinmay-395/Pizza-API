@@ -18,11 +18,8 @@ class ToppingSerializer(serializers.ModelSerializer):
 
 
 class PizzaSerializer(serializers.ModelSerializer):
-    pizza_sizes = serializers.PrimaryKeyRelatedField(
-        many=True,
-        queryset=Size.objects.all()
-    )
-    pizza_toppings = serializers.PrimaryKeyRelatedField(
+    # pizza_size = SizeSerializer(read_only=True)
+    pizza_topping = serializers.PrimaryKeyRelatedField(
         many=True,
         queryset=Topping.objects.all()
     )
@@ -31,13 +28,15 @@ class PizzaSerializer(serializers.ModelSerializer):
         model = Pizza
         fields = [
             'id',
+            'name',
             'pizza_shape',
-            'pizza_sizes',
-            'pizza_toppings',
+            'pizza_size',
+            'pizza_topping',
         ]
         read_only_fields = ['id']
 
 
 class PizzaDetailSerializer(PizzaSerializer):
-    pizza_sizes = SizeSerializer(many=True, read_only=True)
-    pizza_toppings = ToppingSerializer(many=True, read_only=True)
+    """Serialize a pizza details"""
+    pizza_size = SizeSerializer(read_only=True)
+    pizza_topping = ToppingSerializer(many=True, read_only=True)
